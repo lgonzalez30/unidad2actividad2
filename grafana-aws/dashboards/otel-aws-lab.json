@@ -1,0 +1,220 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "mode": "markdown",
+        "content": "| ECS service | CloudWatch metric | Statistic | Value |\n|---|---:|---:|---:|\n| otel-lab-service-a | CPUUtilization | Maximum 24h | 34.65% |\n| otel-lab-service-b | CPUUtilization | Maximum 24h | 45.97% |\n\nSource: CloudWatch AWS/ECS, ClusterName=otel-lab-cluster, dimension ServiceName."
+      },
+      "targets": [],
+      "title": "CPU Utilization by ECS Service",
+      "type": "text"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "mode": "markdown",
+        "content": "| ECS service | CloudWatch metric | Statistic | Value |\n|---|---:|---:|---:|\n| otel-lab-service-a | MemoryUtilization | Maximum 24h | 16.02% |\n| otel-lab-service-b | MemoryUtilization | Maximum 24h | 18.65% |\n\nSource: CloudWatch AWS/ECS, ClusterName=otel-lab-cluster, dimension ServiceName."
+      },
+      "targets": [],
+      "title": "Memory Utilization by ECS Service",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "targets": [
+        {
+          "expression": "fields @timestamp, @message | stats count(*) as requests by bin(1m)",
+          "logsMode": "Insights",
+          "queryLanguage": "CWLI",
+          "logGroups": [
+            {
+              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-a",
+              "name": "/otel-lab/service-a"
+            }
+          ],
+          "queryMode": "Logs",
+          "refId": "A",
+          "region": "us-east-1"
+        }
+      ],
+      "title": "SLI 1 - service-a request log rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 4,
+      "targets": [
+        {
+          "expression": "fields @timestamp, @message | stats count(*) as lookups by bin(1m)",
+          "logsMode": "Insights",
+          "queryLanguage": "CWLI",
+          "logGroups": [
+            {
+              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-b",
+              "name": "/otel-lab/service-b"
+            }
+          ],
+          "queryMode": "Logs",
+          "refId": "A",
+          "region": "us-east-1"
+        }
+      ],
+      "title": "SLI 2 - service-b lookup log rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 5,
+      "targets": [
+        {
+          "expression": "fields @timestamp, level, service, trace_id, message | filter level = 'ERROR' or message like /error|failed|exception/ | stats count(*) as errors by bin(1m)",
+          "logsMode": "Insights",
+          "queryLanguage": "CWLI",
+          "logGroups": [
+            {
+              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-a",
+              "name": "/otel-lab/service-a"
+            },
+            {
+              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-b",
+              "name": "/otel-lab/service-b"
+            }
+          ],
+          "queryMode": "Logs",
+          "refId": "A",
+          "region": "us-east-1"
+        }
+      ],
+      "title": "SLI 3 - application errors",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "cloudwatch",
+        "uid": "cloudwatch"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 6,
+      "targets": [
+        {
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "dimensions": {
+            "LogGroupName": "/otel-lab/collector-a"
+          },
+          "metricName": "IncomingLogEvents",
+          "namespace": "AWS/Logs",
+          "period": "60",
+          "queryMode": "Metrics",
+          "refId": "A",
+          "region": "us-east-1",
+          "statistic": "Sum"
+        },
+        {
+          "datasource": {
+            "type": "cloudwatch",
+            "uid": "cloudwatch"
+          },
+          "dimensions": {
+            "LogGroupName": "/otel-lab/collector-b"
+          },
+          "metricName": "IncomingLogEvents",
+          "namespace": "AWS/Logs",
+          "period": "60",
+          "queryMode": "Metrics",
+          "refId": "B",
+          "region": "us-east-1",
+          "statistic": "Sum"
+        }
+      ],
+      "title": "Collector health - log/error signal",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 40,
+  "tags": [
+    "otel",
+    "aws",
+    "ecs"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "OTel AWS Lab - ECS, Logs, Collector",
+  "uid": "otel-aws-lab",
+  "version": 1,
+  "weekStart": ""
+}

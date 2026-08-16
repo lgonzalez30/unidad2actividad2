@@ -1,0 +1,16 @@
+apiVersion: 1
+
+datasources:
+  - name: CloudWatch
+    uid: cloudwatch
+    type: cloudwatch
+    access: proxy
+    isDefault: true
+    jsonData:
+      authType: default
+      defaultRegion: us-east-1
+  - name: Jaeger
+    uid: jaeger
+    type: jaeger
+    access: proxy
+    url: http://jaeger.otel-lab.local:16686

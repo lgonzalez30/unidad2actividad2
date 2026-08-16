@@ -1,0 +1,18 @@
+.terraform/
+.m2/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+tfplan
+*.tfplan
+target/
+logs/
+.DS_Store
+
+# Local credentials/secrets
+*_accessKeys.csv
+*.pem
+*.key
+.env
+.env.*
+aws-credentials*

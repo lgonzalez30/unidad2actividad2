@@ -1,0 +1,198 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "targets": [
+        {
+          "expr": "sum by (job) (rate(http_server_requests_seconds_count{job=~\"service-a|service-b\"}[1m]))",
+          "legendFormat": "service-a"
+        },
+        {
+          "expr": "sum(rate(orders_processed_total[1m]))",
+          "legendFormat": "service-b"
+        }
+      ],
+      "title": "SLI 1 - Throughput",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{job=~\"service-a|service-b\"}[5m])) by (le, job))",
+          "legendFormat": "{{job}} p99"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{job=~\"service-a|service-b\"}[5m])) by (le, job))",
+          "legendFormat": "{{job}} p95"
+        }
+      ],
+      "title": "SLI 2 - Latencia p99",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 3,
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{job=~\"service-a|service-b\", status=~\"5..\"}[5m])) / clamp_min(sum(rate(http_server_requests_seconds_count{job=~\"service-a|service-b\"}[5m])), 1)",
+          "legendFormat": "5xx"
+        },
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count{job=~\"service-a|service-b\", status=~\"4..\"}[5m])) / clamp_min(sum(rate(http_server_requests_seconds_count{job=~\"service-a|service-b\"}[5m])), 1)",
+          "legendFormat": "4xx"
+        }
+      ],
+      "title": "SLI 3 - Error rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "targets": [
+        {
+          "expr": "sum(increase(http_server_requests_seconds_count{job=\"service-a\"}[5m]))",
+          "legendFormat": "checkout total"
+        },
+        {
+          "expr": "sum(increase(http_server_requests_seconds_count{job=\"service-b\"}[5m]))",
+          "legendFormat": "product lookups total"
+        }
+      ],
+      "title": "SLI 4 - Volumen 5m",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 8
+      },
+      "id": 5,
+      "targets": [
+        {
+          "expr": "process_cpu_usage{job=~\"service-a|service-b\"}",
+          "legendFormat": "{{job}}"
+        }
+      ],
+      "title": "CPU",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "id": 6,
+      "targets": [
+        {
+          "expr": "sum(rate(otelcol_exporter_send_failed_spans[5m]))",
+          "legendFormat": "failed spans"
+        },
+        {
+          "expr": "sum(rate(otelcol_exporter_send_failed_metric_points[5m]))",
+          "legendFormat": "failed metric points"
+        },
+        {
+          "expr": "sum(rate(otelcol_exporter_send_failed_log_records[5m]))",
+          "legendFormat": "failed log records"
+        }
+      ],
+      "title": "Errores OTel Collector",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "10s",
+  "schemaVersion": 40,
+  "tags": [
+    "otel",
+    "taller2unidad2"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "OTel Microservices Lab",
+  "uid": "otel-lab",
+  "version": 1,
+  "weekStart": ""
+}
