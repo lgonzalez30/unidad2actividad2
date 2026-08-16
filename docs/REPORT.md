@@ -145,14 +145,14 @@ El benchmark local se ejecuto con k6 usando 10 VUs, 30 segundos de warmup y 2 mi
 
 | Metric | Without OTel | With OTel | Observed overhead |
 | --- | ---: | ---: | ---: |
-| Average latency | 26.71 ms | 16.72 ms | -37.40% |
-| p50 latency | 18.85 ms | 14.82 ms | -21.38% |
-| p95 latency | 69.61 ms | 28.19 ms | -59.50% |
-| p99 latency | 143.70 ms | 52.44 ms | -63.51% |
-| Throughput | 8.216 req/s | 8.264 req/s | +0.57% |
-| Error rate | 0.00% | 0.00% | 0 pp |
+| Average latency | 32.73 ms | 70.30 ms | +114.78% |
+| p50 latency | 29.33 ms | 41.24 ms | +40.61% |
+| p95 latency | 65.30 ms | 166.61 ms | +155.15% |
+| p99 latency | 96.92 ms | 508.31 ms | +424.47% |
+| Throughput | 8.133 req/s | 7.862 req/s | -3.33% |
+| Error rate | 0.06% | 0.00% | -0.06 pp |
 
-Los resultados muestran overhead de latencia negativo observado. Esto no debe interpretarse como que OTel mejora la latencia. En benchmarks locales cortos, la JVM, caches, JIT compilation y el estado caliente de contenedores pueden dominar los resultados. La lectura correcta es que, para esta carga, el costo de OTel no degrado el p99 y se mantuvo dentro de los umbrales definidos.
+Los resultados muestran overhead de latencia en el escenario instrumentado. La latencia p99 aumento de 96.92 ms a 508.31 ms, equivalente a +424.47%. Aun asi, el p99 se mantuvo por debajo del umbral definido de 1500 ms y la tasa de errores permanecio dentro del objetivo de `http_req_failed < 1%`.
 
 La muestra puntual de CPU/memoria mostro mayor uso de CPU de aplicacion con OTel y memoria adicional de collectors:
 
@@ -172,7 +172,7 @@ El collector como sidecar mantiene baja latencia local para OTLP y simplifica pe
 
 El laboratorio cumple la arquitectura objetivo de dos microservicios con dependencia HTTP y acceso a base de datos. La instrumentacion OTel genera trazas, metricas y logs correlacionables. AWS X-Ray y Jaeger validan trazas distribuidas completas. CloudWatch y Grafana permiten visualizar logs, SLIs y metricas ECS.
 
-El analisis de overhead indica que, bajo la carga probada, no hubo degradacion observable de p99. El costo principal se observa en CPU y memoria asociada a la instrumentacion y a los collectors. Para una medicion mas rigurosa se recomienda ejecutar pruebas mas largas, alternar orden de ejecucion, reiniciar contenedores entre corridas y usar multiples repeticiones estadisticas.
+El analisis de overhead indica que, bajo la carga probada, la instrumentacion incremento la latencia de cola, especialmente p99. El costo principal se observa en la latencia adicional, CPU asociada a la instrumentacion y memoria de los collectors. Para una medicion mas rigurosa se recomienda ejecutar pruebas mas largas, alternar orden de ejecucion, reiniciar contenedores entre corridas y usar multiples repeticiones estadisticas.
 
 ## 11. Evidencias
 

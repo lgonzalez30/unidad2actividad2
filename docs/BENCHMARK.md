@@ -16,14 +16,19 @@ Configuracion de carga:
 
 ## Resultados k6
 
+Evidencias crudas:
+
+- `docs/evidence/benchmark-without-otel-20260815-224421.log`
+- `docs/evidence/benchmark-with-otel-20260815-224421.log`
+
 | Metric | Without OTel | With OTel | Observed overhead |
 | --- | ---: | ---: | ---: |
-| Average latency | 26.71 ms | 16.72 ms | -37.40% |
-| p50 latency | 18.85 ms | 14.82 ms | -21.38% |
-| p95 latency | 69.61 ms | 28.19 ms | -59.50% |
-| p99 latency | 143.70 ms | 52.44 ms | -63.51% |
-| Throughput | 8.216 req/s | 8.264 req/s | +0.57% |
-| Error rate | 0.00% | 0.00% | 0 pp |
+| Average latency | 32.73 ms | 70.30 ms | +114.78% |
+| p50 latency | 29.33 ms | 41.24 ms | +40.61% |
+| p95 latency | 65.30 ms | 166.61 ms | +155.15% |
+| p99 latency | 96.92 ms | 508.31 ms | +424.47% |
+| Throughput | 8.133 req/s | 7.862 req/s | -3.33% |
+| Error rate | 0.06% | 0.00% | -0.06 pp |
 
 ## CPU y memoria local
 
@@ -41,9 +46,9 @@ Valores tomados con `docker stats --no-stream` inmediatamente despues de cada ej
 
 ## Interpretacion
 
-En esta ejecucion local el escenario con OTel mostro menor latencia que el baseline. Esto no significa que OTel reduzca latencia; es un efecto esperable de benchmark local corto con JVM/Quarkus, caches, JIT warmup, DynamoDB Local y contenedores ya calientes. La conclusion tecnica correcta es que, bajo esta carga pequena, el overhead de latencia no fue observable de forma negativa y se mantuvo dentro de los SLOs configurados.
+En esta ejecucion local el escenario con OTel mostro mayor latencia que el baseline, especialmente en p99. La latencia p99 paso de 96.92 ms a 508.31 ms, equivalente a un overhead observado de +424.47%. Aunque el p99 aumento, se mantuvo por debajo del umbral definido de 1500 ms. El throughput bajo 3.33%, de 8.133 req/s a 7.862 req/s.
 
-El mayor costo medible fue en CPU local de aplicacion, especialmente en `service-b`, y en memoria de los collectors. La memoria de aplicacion total no aumento en la muestra puntual, pero el collector agrego aproximadamente 96.39 MiB activos para ambos sidecars.
+El mayor costo medible fue la latencia de cola y el uso adicional de recursos asociado al procesamiento y exportacion de telemetria. La muestra puntual de CPU/memoria muestra mayor uso de CPU local de aplicacion, especialmente en `service-b`, y memoria adicional de los collectors.
 
 Formula:
 
