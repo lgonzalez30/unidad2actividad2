@@ -1,0 +1,154 @@
+<mxfile host="app.diagrams.net" modified="2026-08-16T00:00:00.000Z" agent="codex" version="24.7.17" type="device">
+  <diagram id="otel-aws-architecture" name="OTel AWS Architecture">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="Arquitectura Observabilidad Distribuida - OpenTelemetry en AWS ECS Fargate" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;align=center;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="210" y="20" width="1180" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="aws" value="AWS us-east-1 / Cuenta 070022808405" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#232F3E;fillColor=#F2F3F3;fontColor=#232F3E;fontStyle=1;startSize=30;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="1500" height="880" as="geometry" />
+        </mxCell>
+
+        <mxCell id="vpc" value="VPC otel-lab" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#147EBA;fillColor=#EAF4FB;fontColor=#232F3E;fontStyle=1;startSize=28;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="1420" height="610" as="geometry" />
+        </mxCell>
+
+        <mxCell id="public-subnet" value="Public Subnet + Internet Gateway" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#1F77B4;fillColor=#FFFFFF;fontColor=#232F3E;fontStyle=1;startSize=28;" vertex="1" parent="1">
+          <mxGeometry x="110" y="185" width="1360" height="520" as="geometry" />
+        </mxCell>
+
+        <mxCell id="client" value="Usuario / k6&#xa;GET /orders/{id}" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#5F6368;fillColor=#FFFFFF;fontColor=#202124;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="140" y="330" width="150" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ecs-cluster" value="ECS Cluster: otel-lab-cluster" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#FF9900;fillColor=#FFF4E5;fontColor=#232F3E;fontStyle=1;startSize=28;" vertex="1" parent="1">
+          <mxGeometry x="330" y="220" width="820" height="430" as="geometry" />
+        </mxCell>
+
+        <mxCell id="task-a" value="Fargate Task: otel-lab-service-a" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#FF9900;fillColor=#FFFFFF;fontColor=#232F3E;fontStyle=1;startSize=26;" vertex="1" parent="1">
+          <mxGeometry x="360" y="275" width="330" height="285" as="geometry" />
+        </mxCell>
+
+        <mxCell id="svc-a" value="service-a / Quarkus&#xa;GET /orders/{id}&#xa;custom span: process-order&#xa;logs JSON trace_id/span_id" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#2E7D32;fillColor=#E8F5E9;fontColor=#1B5E20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="325" width="270" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="collector-a" value="OTel Collector sidecar A&#xa;OTLP gRPC/HTTP receiver&#xa;memory_limiter + resource + batch" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6A1B9A;fillColor=#F3E5F5;fontColor=#4A148C;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="455" width="270" height="75" as="geometry" />
+        </mxCell>
+
+        <mxCell id="task-b" value="Fargate Task: otel-lab-service-b" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#FF9900;fillColor=#FFFFFF;fontColor=#232F3E;fontStyle=1;startSize=26;" vertex="1" parent="1">
+          <mxGeometry x="780" y="275" width="330" height="285" as="geometry" />
+        </mxCell>
+
+        <mxCell id="svc-b" value="service-b / Quarkus&#xa;GET /products/{id}&#xa;custom span: lookup-product&#xa;DynamoDB SDK instrumentation" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#2E7D32;fillColor=#E8F5E9;fontColor=#1B5E20;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="810" y="325" width="270" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="collector-b" value="OTel Collector sidecar B&#xa;OTLP gRPC/HTTP receiver&#xa;memory_limiter + resource + batch" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6A1B9A;fillColor=#F3E5F5;fontColor=#4A148C;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="810" y="455" width="270" height="75" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cloudmap" value="Cloud Map&#xa;service-b.otel-lab.local&#xa;jaeger.otel-lab.local" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#1565C0;fillColor=#E3F2FD;fontColor=#0D47A1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="585" width="250" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="dynamodb" value="DynamoDB&#xa;otel-lab-products" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;strokeColor=#7B1FA2;fillColor=#F3E5F5;fontColor=#4A148C;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="335" width="150" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="jaeger" value="Jaeger ECS Service&#xa;UI :16686&#xa;OTLP :4317" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#C75100;fillColor=#FFF3E0;fontColor=#7A3E00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="500" width="190" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grafana" value="Grafana ECS Service&#xa;Dashboard 6 paneles&#xa;CloudWatch + Jaeger datasources" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#C75100;fillColor=#FFF3E0;fontColor=#7A3E00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="610" width="190" height="85" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cloudwatch" value="CloudWatch Logs / Metrics&#xa;/otel-lab/service-a&#xa;/otel-lab/service-b&#xa;/otel-lab/collector" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#B71C1C;fillColor=#FFEBEE;fontColor=#7F0000;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="950" y="790" width="250" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="xray" value="AWS X-Ray&#xa;Service graph&#xa;Traces service-a - service-b - DynamoDB" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#B71C1C;fillColor=#FFEBEE;fontColor=#7F0000;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="790" width="250" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="prom-local" value="Prometheus local&#xa;Collector metrics endpoint&#xa;usado en Docker Compose" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;strokeColor=#5F6368;fillColor=#FAFAFA;fontColor=#3C4043;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="790" width="220" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend" value="Lineas negras: trafico HTTP de negocio&#xa;Lineas moradas: telemetria OTLP&#xa;Lineas rojas: exporters a backends&#xa;Linea azul: consultas de visualizacion" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#5F6368;fillColor=#FFFFFF;fontColor=#202124;" vertex="1" parent="1">
+          <mxGeometry x="120" y="790" width="230" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-client-a" value="HTTP public :8080" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#202124;fontColor=#202124;" edge="1" parent="1" source="client" target="svc-a">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-a-b" value="HTTP + W3C trace context&#xa;GET /products/{id}" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#202124;fontColor=#202124;" edge="1" parent="1" source="svc-a" target="svc-b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-b-db" value="DynamoDB API" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#202124;fontColor=#202124;" edge="1" parent="1" source="svc-b" target="dynamodb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-a-collector" value="traces/logs/metrics OTLP" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6A1B9A;fontColor=#4A148C;" edge="1" parent="1" source="svc-a" target="collector-a">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-b-collector" value="traces/logs/metrics OTLP" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#6A1B9A;fontColor=#4A148C;" edge="1" parent="1" source="svc-b" target="collector-b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-cloudmap-a" value="private DNS" style="endArrow=block;html=1;rounded=0;dashed=1;strokeColor=#1565C0;fontColor=#0D47A1;" edge="1" parent="1" source="svc-a" target="cloudmap">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-cloudmap-b" value="service discovery" style="endArrow=block;html=1;rounded=0;dashed=1;strokeColor=#1565C0;fontColor=#0D47A1;" edge="1" parent="1" source="cloudmap" target="svc-b">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-ca-xray" value="awsxray exporter" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" edge="1" parent="1" source="collector-a" target="xray">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-cb-xray" value="awsxray exporter" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" edge="1" parent="1" source="collector-b" target="xray">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-ca-jaeger" value="OTLP gRPC exporter" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" edge="1" parent="1" source="collector-a" target="jaeger">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-cb-jaeger" value="OTLP gRPC exporter" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" edge="1" parent="1" source="collector-b" target="jaeger">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-ca-cw" value="awscloudwatchlogs exporter" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" edge="1" parent="1" source="collector-a" target="cloudwatch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-cb-cw" value="awscloudwatchlogs exporter" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" edge="1" parent="1" source="collector-b" target="cloudwatch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-grafana-cw" value="CloudWatch datasource&#xa;logs + ECS metrics" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#1565C0;fontColor=#0D47A1;" edge="1" parent="1" source="grafana" target="cloudwatch">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-grafana-jaeger" value="Jaeger datasource&#xa;trace drill-down" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#1565C0;fontColor=#0D47A1;" edge="1" parent="1" source="grafana" target="jaeger">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e-prom-local" value="local metrics only" style="endArrow=block;html=1;rounded=0;dashed=1;strokeColor=#5F6368;fontColor=#3C4043;" edge="1" parent="1" source="collector-a" target="prom-local">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
