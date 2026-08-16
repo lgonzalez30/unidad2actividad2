@@ -85,6 +85,10 @@
           <mxGeometry x="120" y="790" width="230" height="100" as="geometry" />
         </mxCell>
 
+        <mxCell id="endpoints" value="Endpoints de acceso&#xa;&#xa;Local Docker Compose:&#xa;service-a: http://localhost:8080/orders/order-1&#xa;service-b: http://localhost:8081/products/product-1&#xa;Jaeger: http://localhost:16686&#xa;Prometheus: http://localhost:9090&#xa;Grafana: http://localhost:3000&#xa;&#xa;AWS ECS Fargate:&#xa;service-a: http://54.211.65.191:8080&#xa;Grafana: http://3.90.145.54:3000&#xa;Jaeger: http://3.89.48.195:16686&#xa;&#xa;Nota: las IP publicas de Fargate cambian si se recrean las tasks. Resolver con make service-a-url, make grafana-url y make jaeger-url." style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#37474F;fillColor=#ECEFF1;fontColor=#263238;fontStyle=1;align=left;spacingLeft=12;" vertex="1" parent="1">
+          <mxGeometry x="1225" y="790" width="275" height="175" as="geometry" />
+        </mxCell>
+
         <mxCell id="e-client-a" value="HTTP public :8080" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#202124;fontColor=#202124;" edge="1" parent="1" source="client" target="svc-a">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
