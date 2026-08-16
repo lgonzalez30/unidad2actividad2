@@ -1,6 +1,7 @@
 resource "aws_ecr_repository" "service_a" {
   name                 = "otel-lab-service-a"
   image_tag_mutability = "MUTABLE"
+  force_delete         = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -10,6 +11,7 @@ resource "aws_ecr_repository" "service_a" {
 resource "aws_ecr_repository" "service_b" {
   name                 = "otel-lab-service-b"
   image_tag_mutability = "MUTABLE"
+  force_delete         = true
 
   image_scanning_configuration {
     scan_on_push = true
@@ -19,6 +21,7 @@ resource "aws_ecr_repository" "service_b" {
 resource "aws_ecr_repository" "grafana" {
   name                 = "otel-lab-grafana"
   image_tag_mutability = "MUTABLE"
+  force_delete         = true
 
   image_scanning_configuration {
     scan_on_push = true
