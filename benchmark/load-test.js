@@ -28,7 +28,12 @@ export default function () {
   const response = http.get(`${baseUrl}/orders/${orderId}`);
   check(response, {
     "status is 200": (r) => r.status === 200,
-    "has product": (r) => Boolean(r.json("product.productId"))
+    "has product": (r) => {
+      if (r.status !== 200 || !r.body) {
+        return false;
+      }
+      return Boolean(r.json("product.productId"));
+    }
   });
   sleep(1);
 }
