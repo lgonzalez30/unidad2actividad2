@@ -66,6 +66,14 @@ make benchmark-baseline
 make benchmark-otel
 ```
 
+Ejecucion completa con evidencias separadas:
+
+```bash
+make benchmark-overhead VUS=10 WARMUP=30s DURATION=2m
+```
+
+El script guarda salidas completas en `docs/evidence/benchmark-without-otel-*.log` y `docs/evidence/benchmark-with-otel-*.log`.
+
 AWS:
 
 1. Desplegar con `otel_enabled=false`.

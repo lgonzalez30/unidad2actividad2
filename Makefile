@@ -7,7 +7,7 @@ WARMUP ?= 30s
 DURATION ?= 5m
 TF_DIR := infra
 
-.PHONY: validate build push plan deploy benchmark-baseline benchmark-otel destroy verify-cleanup service-a-url grafana-url jaeger-url
+.PHONY: validate build push plan deploy benchmark-baseline benchmark-otel benchmark-overhead destroy verify-cleanup service-a-url grafana-url jaeger-url
 
 validate:
 	docker compose config --quiet
@@ -57,6 +57,9 @@ benchmark-baseline:
 benchmark-otel:
 	OTEL_ENABLED=true docker compose up --build -d
 	docker compose --profile benchmark run --rm -e VUS=$(VUS) -e WARMUP=$(WARMUP) -e DURATION=$(DURATION) k6 run --summary-trend-stats "avg,min,med,p(90),p(95),p(99),max" /scripts/load-test.js
+
+benchmark-overhead:
+	VUS=$(VUS) WARMUP=$(WARMUP) DURATION=$(DURATION) bash benchmark/run-overhead.sh
 
 destroy:
 	cd $(TF_DIR) && AWS_PROFILE=$(AWS_PROFILE) terraform destroy
