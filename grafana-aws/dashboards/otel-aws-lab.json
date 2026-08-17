@@ -69,7 +69,7 @@
           "queryLanguage": "CWLI",
           "logGroups": [
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-a",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-a",
               "name": "/otel-lab/service-a"
             }
           ],
@@ -100,7 +100,7 @@
           "queryLanguage": "CWLI",
           "logGroups": [
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-b",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-b",
               "name": "/otel-lab/service-b"
             }
           ],
@@ -131,11 +131,11 @@
           "queryLanguage": "CWLI",
           "logGroups": [
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-a",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-a",
               "name": "/otel-lab/service-a"
             },
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-b",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-b",
               "name": "/otel-lab/service-b"
             }
           ],

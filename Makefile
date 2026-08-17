@@ -1,6 +1,6 @@
 AWS_REGION ?= us-east-1
 AWS_PROFILE ?= otel-lab
-AWS_ROLE_ARN ?= arn:aws:iam::070022808405:role/otel-lab-terraform-role
+AWS_ROLE_ARN ?= arn:aws:iam::026338613200:role/otel-lab-terraform-role
 IMAGE_TAG ?= latest
 VUS ?= 10
 WARMUP ?= 30s
