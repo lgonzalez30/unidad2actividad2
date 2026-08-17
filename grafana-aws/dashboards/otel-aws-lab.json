@@ -168,12 +168,16 @@
           "dimensions": {
             "LogGroupName": "/otel-lab/collector-a"
           },
+          "matchExact": true,
+          "metricEditorMode": 0,
           "metricName": "IncomingLogEvents",
+          "metricQueryType": 0,
           "namespace": "AWS/Logs",
           "period": "60",
           "queryMode": "Metrics",
           "refId": "A",
           "region": "us-east-1",
+          "sqlExpression": "",
           "statistic": "Sum"
         },
         {
@@ -184,12 +188,16 @@
           "dimensions": {
             "LogGroupName": "/otel-lab/collector-b"
           },
+          "matchExact": true,
+          "metricEditorMode": 0,
           "metricName": "IncomingLogEvents",
+          "metricQueryType": 0,
           "namespace": "AWS/Logs",
           "period": "60",
           "queryMode": "Metrics",
           "refId": "B",
           "region": "us-east-1",
+          "sqlExpression": "",
           "statistic": "Sum"
         }
       ],
