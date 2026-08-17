@@ -139,6 +139,14 @@ resource "aws_security_group" "jaeger" {
     ]
   }
 
+  ingress {
+    description     = "Jaeger UI/API from the Grafana Jaeger datasource proxy"
+    from_port       = 16686
+    to_port         = 16686
+    protocol        = "tcp"
+    security_groups = [aws_security_group.grafana.id]
+  }
+
   egress {
     description = "Outbound to AWS APIs and image pulls"
     from_port   = 0

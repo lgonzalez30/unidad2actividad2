@@ -151,21 +151,23 @@ Ejecucion comparativa completa:
 make benchmark-overhead
 ```
 
-Resultados finales documentados:
+Resultados finales documentados (75 VUs, 5 min, rango 50-100 usuarios exigido por el enunciado):
 
-| Metric | Without OTel | With OTel | Observed overhead |
+| Metric | Without OTel | With OTel | Observed delta |
 | --- | ---: | ---: | ---: |
-| Average latency | 32.73 ms | 70.30 ms | +114.78% |
-| p95 latency | 65.30 ms | 166.61 ms | +155.15% |
-| p99 latency | 96.92 ms | 508.31 ms | +424.47% |
-| Throughput | 8.133 req/s | 7.862 req/s | -3.33% |
-| Error rate | 0.06% | 0.00% | -0.06 pp |
+| Average latency | 7.35 ms | 7.00 ms | -4.76% |
+| p95 latency | 20.03 ms | 15.53 ms | -22.47% |
+| p99 latency | 40.20 ms | 31.24 ms | -22.29% |
+| Throughput | 68.260 req/s | 68.264 req/s | +0.01% |
+| Error rate | 0.02% | 0.00% | -0.02 pp |
+
+El resultado no muestra el overhead esperado (con-OTel salio mas rapido); la interpretacion mas plausible es un efecto de orden de ejecucion, no que la instrumentacion acelere el sistema. Ver [docs/BENCHMARK.md](docs/BENCHMARK.md) para el analisis completo.
 
 Evidencia:
 
 - [docs/BENCHMARK.md](docs/BENCHMARK.md)
-- [docs/evidence/benchmark-without-otel-20260815-224421.log](docs/evidence/benchmark-without-otel-20260815-224421.log)
-- [docs/evidence/benchmark-with-otel-20260815-224421.log](docs/evidence/benchmark-with-otel-20260815-224421.log)
+- [docs/evidence/benchmark-without-otel-20260816-002533.log](docs/evidence/benchmark-without-otel-20260816-002533.log)
+- [docs/evidence/benchmark-with-otel-20260816-002533.log](docs/evidence/benchmark-with-otel-20260816-002533.log)
 
 ## Budget
 

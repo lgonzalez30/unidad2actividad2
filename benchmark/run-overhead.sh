@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-VUS="${VUS:-10}"
+# Git Bash on Windows rewrites leading-"/" args (like /scripts/load-test.js,
+# a path inside the k6 container) into host paths before docker sees them.
+# No-op on real bash (macOS/Linux).
+export MSYS_NO_PATHCONV=1
+
+VUS="${VUS:-75}"
 WARMUP="${WARMUP:-30s}"
-DURATION="${DURATION:-2m}"
+DURATION="${DURATION:-5m}"
 EVIDENCE_DIR="${EVIDENCE_DIR:-docs/evidence}"
 TIMESTAMP="$(date +%Y%m%d-%H%M%S)"
 

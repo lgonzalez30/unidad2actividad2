@@ -69,7 +69,7 @@
           "queryLanguage": "CWLI",
           "logGroups": [
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-a",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-a",
               "name": "/otel-lab/service-a"
             }
           ],
@@ -100,7 +100,7 @@
           "queryLanguage": "CWLI",
           "logGroups": [
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-b",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-b",
               "name": "/otel-lab/service-b"
             }
           ],
@@ -131,11 +131,11 @@
           "queryLanguage": "CWLI",
           "logGroups": [
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-a",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-a",
               "name": "/otel-lab/service-a"
             },
             {
-              "arn": "arn:aws:logs:us-east-1:070022808405:log-group:/otel-lab/service-b",
+              "arn": "arn:aws:logs:us-east-1:026338613200:log-group:/otel-lab/service-b",
               "name": "/otel-lab/service-b"
             }
           ],
@@ -168,12 +168,16 @@
           "dimensions": {
             "LogGroupName": "/otel-lab/collector-a"
           },
+          "matchExact": true,
+          "metricEditorMode": 0,
           "metricName": "IncomingLogEvents",
+          "metricQueryType": 0,
           "namespace": "AWS/Logs",
           "period": "60",
           "queryMode": "Metrics",
           "refId": "A",
           "region": "us-east-1",
+          "sqlExpression": "",
           "statistic": "Sum"
         },
         {
@@ -184,12 +188,16 @@
           "dimensions": {
             "LogGroupName": "/otel-lab/collector-b"
           },
+          "matchExact": true,
+          "metricEditorMode": 0,
           "metricName": "IncomingLogEvents",
+          "metricQueryType": 0,
           "namespace": "AWS/Logs",
           "period": "60",
           "queryMode": "Metrics",
           "refId": "B",
           "region": "us-east-1",
+          "sqlExpression": "",
           "statistic": "Sum"
         }
       ],

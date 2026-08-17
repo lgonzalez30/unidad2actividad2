@@ -1,15 +1,15 @@
 # Benchmark y overhead
 
-Fecha de ejecucion: 2026-08-15.
+Fecha de ejecucion: 2026-08-17.
 
-Ambiente medido: stack local Docker Compose sobre macOS, usando los mismos microservicios Quarkus que se despliegan en AWS. El flujo probado fue `k6 -> service-a -> service-b -> DynamoDB Local`. La comparacion se hizo alternando `OTEL_ENABLED=false` y `OTEL_ENABLED=true`.
+Ambiente medido: stack local Docker Compose sobre Windows, usando los mismos microservicios Quarkus que se despliegan en AWS. El flujo probado fue `k6 -> service-a -> service-b -> DynamoDB Local`. La comparacion se hizo alternando `OTEL_ENABLED=false` y `OTEL_ENABLED=true`, ejecutando siempre primero el caso sin OTel y despues el caso con OTel.
 
 Configuracion de carga:
 
 - Herramienta: k6.
-- VUs maximos: 10.
+- VUs maximos: 75 (dentro del rango 50-100 solicitado).
 - Warmup: 30s.
-- Duracion estable: 2m.
+- Duracion estable: 5m.
 - Ramp down: 30s.
 - Endpoint: `GET /orders/{id}`.
 - Criterios k6: `http_req_failed < 1%`, `p95 < 750ms`, `p99 < 1500ms`.
@@ -18,37 +18,33 @@ Configuracion de carga:
 
 Evidencias crudas:
 
-- `docs/evidence/benchmark-without-otel-20260815-224421.log`
-- `docs/evidence/benchmark-with-otel-20260815-224421.log`
+- `docs/evidence/benchmark-without-otel-20260816-002533.log`
+- `docs/evidence/benchmark-with-otel-20260816-002533.log`
 
-| Metric | Without OTel | With OTel | Observed overhead |
+| Metric | Without OTel | With OTel | Observed delta |
 | --- | ---: | ---: | ---: |
-| Average latency | 32.73 ms | 70.30 ms | +114.78% |
-| p50 latency | 29.33 ms | 41.24 ms | +40.61% |
-| p95 latency | 65.30 ms | 166.61 ms | +155.15% |
-| p99 latency | 96.92 ms | 508.31 ms | +424.47% |
-| Throughput | 8.133 req/s | 7.862 req/s | -3.33% |
-| Error rate | 0.06% | 0.00% | -0.06 pp |
+| Average latency | 7.35 ms | 7.00 ms | -4.76% |
+| p50 latency | 4.77 ms | 5.44 ms | +14.05% |
+| p95 latency | 20.03 ms | 15.53 ms | -22.47% |
+| p99 latency | 40.20 ms | 31.24 ms | -22.29% |
+| Throughput | 68.260 req/s | 68.264 req/s | +0.01% |
+| Error rate | 0.02% (5/24603) | 0.00% (0/24601) | -0.02 pp |
+| Requests totales | 24,603 | 24,601 | — |
+| VUs maximos | 75 | 75 | — |
+
+Corridas anteriores (10 VUs, 2 min, fuera del rango exigido por el enunciado) quedan en `docs/evidence/benchmark-*-20260815-224421.log` solo como referencia historica; no se usan para la tabla anterior.
 
 ## CPU y memoria local
 
-Valores tomados con `docker stats --no-stream` inmediatamente despues de cada ejecucion. Son muestras puntuales, no maximos historicos.
-
-| Component | Without OTel | With OTel | Difference |
-| --- | ---: | ---: | ---: |
-| service-a CPU | 0.40% | 0.41% | +0.01 pp |
-| service-b CPU | 0.55% | 2.51% | +1.96 pp |
-| App CPU total | 0.95% | 2.92% | +207.37% |
-| service-a memory | 179.4 MiB | 188.0 MiB | +8.6 MiB |
-| service-b memory | 241.5 MiB | 220.8 MiB | -20.7 MiB |
-| App memory total | 420.9 MiB | 408.8 MiB | -12.1 MiB |
-| Collector memory total | 82.47 MiB idle | 96.39 MiB active | +13.92 MiB |
+**No capturado en esta corrida.** El script `benchmark/run-overhead.sh` no automatiza `docker stats` durante la carga — es un hallazgo pendiente, no un dato inventado. Los valores de CPU/memoria que aparecian aqui en la version anterior de este documento correspondian a la corrida de 10 VUs/2min del 2026-08-15 y se retiraron porque no son comparables con esta corrida de 75 VUs/5min.
 
 ## Interpretacion
 
-En esta ejecucion local el escenario con OTel mostro mayor latencia que el baseline, especialmente en p99. La latencia p99 paso de 96.92 ms a 508.31 ms, equivalente a un overhead observado de +424.47%. Aunque el p99 aumento, se mantuvo por debajo del umbral definido de 1500 ms. El throughput bajo 3.33%, de 8.133 req/s a 7.862 req/s.
+**El resultado es contraintuitivo y hay que decirlo asi en el reporte, no maquillarlo:** la fase con OTel activo no mostro el overhead esperado — de hecho p95 y p99 salieron mas bajos que el baseline. La muestra es robusta (24.6k requests por fase, miles de observaciones detras del p99, no las ~14 de la corrida anterior de 10 VUs), asi que no es ruido por tamano de muestra.
 
-El mayor costo medible fue la latencia de cola y el uso adicional de recursos asociado al procesamiento y exportacion de telemetria. La muestra puntual de CPU/memoria muestra mayor uso de CPU local de aplicacion, especialmente en `service-b`, y memoria adicional de los collectors.
+La explicacion mas plausible no es que la instrumentacion acelere el sistema, sino un **efecto de orden**: el script siempre corre "without-otel" primero, contra imagenes recien construidas, JVM fria, y cache de SO/Docker sin calentar; para cuando arranca "with-otel" segundos despues, todo eso ya esta caliente (JIT del JVM, conexiones a DynamoDB Local ya establecidas, capas de Docker en cache). El p50 subio +14% mientras que p95/p99 bajaron ~22% — un patron mixto, no una mejora sistematica, consistente con ruido de entorno mas que con un efecto real de la instrumentacion.
+
+Para un resultado que aisle mejor el overhead real de OTel del efecto de warm-up, el siguiente paso metodologico seria alternar el orden entre corridas (o promediar varias corridas con orden invertido). Se documenta la limitacion explicitamente en vez de reportar una conclusion que los datos no sostienen.
 
 Formula:
 
@@ -71,10 +67,10 @@ make benchmark-baseline
 make benchmark-otel
 ```
 
-Ejecucion completa con evidencias separadas:
+Ejecucion completa con evidencias separadas (75 VUs / 5m son el default; se puede sobreescribir):
 
 ```bash
-make benchmark-overhead VUS=10 WARMUP=30s DURATION=2m
+make benchmark-overhead
 ```
 
 El script guarda salidas completas en `docs/evidence/benchmark-without-otel-*.log` y `docs/evidence/benchmark-with-otel-*.log`.

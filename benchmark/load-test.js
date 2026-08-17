@@ -2,7 +2,7 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 const baseUrl = __ENV.BASE_URL || "http://localhost:8080";
-const vus = Number(__ENV.VUS || "10");
+const vus = Number(__ENV.VUS || "75");
 const warmup = __ENV.WARMUP || "30s";
 const duration = __ENV.DURATION || "5m";
 

@@ -3,19 +3,11 @@ global:
   evaluation_interval: 10s
 
 scrape_configs:
-  - job_name: service-a
-    static_configs:
-      - targets: ["service-a:8080"]
-
-  - job_name: service-b
-    static_configs:
-      - targets: ["service-b:8080"]
-
   - job_name: otel-collector-a
     static_configs:
       - targets: ["otel-collector-a:8888"]
 
-  - job_name: otel-collector-a-exporter
+  - job_name: service-a
     static_configs:
       - targets: ["otel-collector-a:9464"]
 
@@ -23,6 +15,6 @@ scrape_configs:
     static_configs:
       - targets: ["otel-collector-b:8888"]
 
-  - job_name: otel-collector-b-exporter
+  - job_name: service-b
     static_configs:
       - targets: ["otel-collector-b:9464"]

@@ -57,7 +57,7 @@ resource "aws_ecs_task_definition" "service_a" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
 
   container_definitions = jsonencode([
@@ -92,6 +92,8 @@ resource "aws_ecs_task_definition" "service_a" {
         { name = "AWS_REGION", value = var.aws_region },
         { name = "OTEL_LOG_GROUP", value = local.log_groups.collector_exported_logs },
         { name = "OTEL_LOG_STREAM", value = "service-a-otlp-logs" },
+        { name = "OTEL_METRICS_LOG_GROUP", value = local.log_groups.collector_metrics },
+        { name = "OTEL_METRICS_LOG_STREAM", value = "service-a-metrics" },
         { name = "OTEL_CONFIG", value = file("${path.module}/../otel/collector-aws.yaml") }
       ]
       logConfiguration = {
@@ -117,7 +119,7 @@ resource "aws_ecs_task_definition" "service_b" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
 
   container_definitions = jsonencode([
@@ -152,6 +154,8 @@ resource "aws_ecs_task_definition" "service_b" {
         { name = "AWS_REGION", value = var.aws_region },
         { name = "OTEL_LOG_GROUP", value = local.log_groups.collector_exported_logs },
         { name = "OTEL_LOG_STREAM", value = "service-b-otlp-logs" },
+        { name = "OTEL_METRICS_LOG_GROUP", value = local.log_groups.collector_metrics },
+        { name = "OTEL_METRICS_LOG_STREAM", value = "service-b-metrics" },
         { name = "OTEL_CONFIG", value = file("${path.module}/../otel/collector-aws.yaml") }
       ]
       logConfiguration = {
@@ -214,7 +218,7 @@ resource "aws_ecs_task_definition" "jaeger" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
 
   container_definitions = jsonencode([
@@ -270,7 +274,7 @@ resource "aws_ecs_task_definition" "grafana" {
 
   runtime_platform {
     operating_system_family = "LINUX"
-    cpu_architecture        = "ARM64"
+    cpu_architecture        = "X86_64"
   }
 
   container_definitions = jsonencode([
