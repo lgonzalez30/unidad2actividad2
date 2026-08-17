@@ -63,7 +63,9 @@ services:
       - jaeger
 
   service-a:
-    build: ./service-a
+    build:
+      context: .
+      dockerfile: service-a/Dockerfile
     environment:
       QUARKUS_PROFILE: local
       OTEL_ENABLED: ${OTEL_ENABLED:-true}
@@ -78,7 +80,9 @@ services:
         condition: service_started
 
   service-b:
-    build: ./service-b
+    build:
+      context: .
+      dockerfile: service-b/Dockerfile
     environment:
       QUARKUS_PROFILE: local
       OTEL_ENABLED: ${OTEL_ENABLED:-true}

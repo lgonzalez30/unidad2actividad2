@@ -11,6 +11,7 @@ TF_DIR := infra
 
 validate:
 	docker compose config --quiet
+	mvn -f libs/company-otel-business/pom.xml -B -Dmaven.repo.local=.m2/repository install
 	mvn -f service-a/pom.xml -B -Dmaven.repo.local=.m2/repository -DskipTests package
 	mvn -f service-b/pom.xml -B -Dmaven.repo.local=.m2/repository -DskipTests package
 	cd $(TF_DIR) && terraform fmt -check
@@ -18,8 +19,8 @@ validate:
 	cd $(TF_DIR) && terraform validate
 
 build:
-	docker build -t otel-lab-service-a:$(IMAGE_TAG) service-a
-	docker build -t otel-lab-service-b:$(IMAGE_TAG) service-b
+	docker build -f service-a/Dockerfile -t otel-lab-service-a:$(IMAGE_TAG) .
+	docker build -f service-b/Dockerfile -t otel-lab-service-b:$(IMAGE_TAG) .
 	docker build -t otel-lab-grafana:$(IMAGE_TAG) grafana-aws
 
 push:

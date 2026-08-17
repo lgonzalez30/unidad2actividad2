@@ -1,10 +1,8 @@
 package edu.unisabana.otel.serviceb;
 
+import edu.unisabana.otel.company.core.OtelCompanyTrace;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.instrumentation.annotations.SpanAttribute;
-import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.math.BigDecimal;
@@ -29,12 +27,9 @@ public class ProductService {
     @ConfigProperty(name = "products.table.name", defaultValue = "otel-lab-products")
     String tableName;
 
-    @WithSpan("lookup-product")
-    public Optional<ProductResponse> lookupProduct(@SpanAttribute("product.id") String productId) {
+    @OtelCompanyTrace(operation = "otel.company.product.lookup")
+    public Optional<ProductResponse> lookupProduct(String productId) {
         TraceMdc.putCurrentSpan();
-        Span.current().setAttribute("business.operation", "lookup-product");
-        Span.current().setAttribute("db.system", "dynamodb");
-        Span.current().setAttribute("db.name", tableName);
         Timer.Sample sample = Timer.start(meterRegistry);
         try {
             Map<String, AttributeValue> item = dynamoDbClient.getItem(GetItemRequest.builder()

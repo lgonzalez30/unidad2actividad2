@@ -16,6 +16,7 @@
     <quarkus.platform.version>3.37.4</quarkus.platform.version>
     <quarkiverse.amazonservices.version>3.19.0</quarkiverse.amazonservices.version>
     <surefire-plugin.version>3.5.2</surefire-plugin.version>
+    <aspectj.version>1.9.22.1</aspectj.version>
   </properties>
 
   <dependencyManagement>
@@ -71,9 +72,9 @@
       <artifactId>url-connection-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>io.opentelemetry.instrumentation</groupId>
-      <artifactId>opentelemetry-instrumentation-annotations</artifactId>
-      <version>2.17.0</version>
+      <groupId>edu.unisabana.otel</groupId>
+      <artifactId>company-otel-aspectj</artifactId>
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
 
@@ -104,6 +105,44 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire-plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>aspectj-maven-plugin</artifactId>
+        <version>1.15.0</version>
+        <configuration>
+          <complianceLevel>17</complianceLevel>
+          <source>17</source>
+          <target>17</target>
+          <showWeaveInfo>true</showWeaveInfo>
+          <Xlint>ignore</Xlint>
+          <forceAjcCompile>true</forceAjcCompile>
+          <sources />
+          <weaveDirectories>
+            <weaveDirectory>${project.build.outputDirectory}</weaveDirectory>
+          </weaveDirectories>
+          <aspectLibraries>
+            <aspectLibrary>
+              <groupId>edu.unisabana.otel</groupId>
+              <artifactId>company-otel-aspectj</artifactId>
+            </aspectLibrary>
+          </aspectLibraries>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>${aspectj.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

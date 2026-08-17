@@ -56,7 +56,7 @@ Se evita NAT Gateway, ALB, RDS, EKS, Managed Prometheus y Managed Grafana para r
 - HTTP inbound: instrumentacion automatica de Quarkus REST.
 - HTTP outbound: instrumentacion automatica de Quarkus REST Client.
 - DynamoDB: instrumentacion AWS SDK via Quarkus Amazon Services con `quarkus.dynamodb.telemetry.enabled=true`.
-- Custom spans: `process-order` y `lookup-product`.
+- Custom spans: `process order` y `lookup product` generados por la libreria reutilizable `@OtelCompanyTrace`.
 - Context propagation: W3C Trace Context entre `service-a` y `service-b`.
 - Logs: JSON en stdout con `service`, `trace_id` y `span_id`; en AWS tambien quedan en CloudWatch Logs.
 - Traces AWS: aplicacion -> sidecar Collector -> AWS X-Ray y Jaeger.
@@ -185,6 +185,8 @@ AWS Budget no es un hard cap. AWS no detiene automaticamente ECS al llegar a USD
 Entregables principales:
 
 - Codigo instrumentado: [service-a](service-a), [service-b](service-b)
+- Libreria de instrumentacion custom: [libs/company-otel-business](libs/company-otel-business)
+- Decision tecnica de la libreria: [docs/ADR-company-business-instrumentation.md](docs/ADR-company-business-instrumentation.md)
 - Configuracion OTel Collector: [otel/collector-aws.yaml](otel/collector-aws.yaml), [otel/collector-local.yaml](otel/collector-local.yaml)
 - Infraestructura Terraform: [infra](infra)
 - Dashboard Grafana AWS: [grafana-aws/dashboards/otel-aws-lab.json](grafana-aws/dashboards/otel-aws-lab.json)

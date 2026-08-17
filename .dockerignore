@@ -1,0 +1,12 @@
+**/target/
+.m2/
+.git/
+.terraform/
+**/.terraform/
+*.tfstate
+*.tfstate.*
+tfplan
+*.tfplan
+terraform.tfvars
+.DS_Store
+docs/REPORT.docx

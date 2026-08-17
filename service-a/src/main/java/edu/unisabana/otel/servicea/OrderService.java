@@ -1,10 +1,8 @@
 package edu.unisabana.otel.servicea;
 
+import edu.unisabana.otel.company.core.OtelCompanyTrace;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.instrumentation.annotations.SpanAttribute;
-import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -21,13 +19,11 @@ public class OrderService {
     @Inject
     MeterRegistry meterRegistry;
 
-    @WithSpan("process-order")
-    public OrderResponse processOrder(@SpanAttribute("order.id") String orderId) {
+    @OtelCompanyTrace(operation = "otel.company.order.process")
+    public OrderResponse processOrder(String orderId) {
         TraceMdc.putCurrentSpan();
         Timer.Sample sample = Timer.start(meterRegistry);
         String productId = productIdFor(orderId);
-        Span.current().setAttribute("product.id", productId);
-        Span.current().setAttribute("business.operation", "process-order");
         try {
             ProductResponse product = productClient.getProduct(productId);
             meterRegistry.counter("orders_processed_total", "status", "success").increment();
