@@ -18,8 +18,8 @@ Configuracion de carga:
 
 Evidencias crudas:
 
-- `docs/evidence/benchmark-without-otel-20260817-002533.log`
-- `docs/evidence/benchmark-with-otel-20260817-002533.log`
+- `docs/evidence/benchmark-without-otel-20260816-002533.log`
+- `docs/evidence/benchmark-with-otel-20260816-002533.log`
 
 | Metric | Without OTel | With OTel | Observed delta |
 | --- | ---: | ---: | ---: |
