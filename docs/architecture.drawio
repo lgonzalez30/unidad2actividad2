@@ -7,8 +7,8 @@
         <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;align=center;verticalAlign=middle;" value="Arquitectura Observabilidad Distribuida - OpenTelemetry en AWS ECS Fargate" vertex="1">
           <mxGeometry height="40" width="1180" x="210" y="20" as="geometry" />
         </mxCell>
-        <mxCell id="aws" parent="1" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#232F3E;fillColor=#F2F3F3;fontColor=#232F3E;fontStyle=1;startSize=30;" value="AWS us-east-1 / Cuenta 070022808405" vertex="1">
-          <mxGeometry height="880" width="1500" x="40" y="90" as="geometry" />
+        <mxCell id="aws" parent="1" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#232F3E;fillColor=#F2F3F3;fontColor=#232F3E;fontStyle=1;startSize=30;" value="AWS us-east-1" vertex="1">
+          <mxGeometry height="880" width="1650" x="40" y="90" as="geometry" />
         </mxCell>
         <mxCell id="vpc" parent="1" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#147EBA;fillColor=#EAF4FB;fontColor=#232F3E;fontStyle=1;startSize=28;" value="VPC otel-lab" vertex="1">
           <mxGeometry height="610" width="1420" x="80" y="140" as="geometry" />
@@ -20,10 +20,10 @@
           <mxGeometry height="70" width="170" x="10" y="345" as="geometry" />
         </mxCell>
         <mxCell id="client" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#5F6368;fillColor=#FFFFFF;fontColor=#202124;fontStyle=1;" value="Usuario / k6&#xa;GET /orders/{id}" vertex="1">
-          <mxGeometry height="70" width="150" x="140" y="330" as="geometry" />
+          <mxGeometry height="70" width="150" x="-180" y="330" as="geometry" />
         </mxCell>
         <mxCell id="ecs-cluster" parent="1" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#FF9900;fillColor=#FFF4E5;fontColor=#232F3E;fontStyle=1;startSize=28;" value="ECS Cluster: otel-lab-cluster" vertex="1">
-          <mxGeometry height="430" width="820" x="330" y="220" as="geometry" />
+          <mxGeometry height="480" width="1060" x="330" y="220" as="geometry" />
         </mxCell>
         <mxCell id="task-a" parent="1" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#FF9900;fillColor=#FFFFFF;fontColor=#232F3E;fontStyle=1;startSize=26;" value="Fargate Task: otel-lab-service-a" vertex="1">
           <mxGeometry height="285" width="330" x="360" y="275" as="geometry" />
@@ -44,13 +44,13 @@
           <mxGeometry height="75" width="270" x="810" y="455" as="geometry" />
         </mxCell>
         <mxCell id="dynamodb" parent="1" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;strokeColor=#7B1FA2;fillColor=#F3E5F5;fontColor=#4A148C;fontStyle=1;" value="DynamoDB&#xa;otel-lab-products" vertex="1">
-          <mxGeometry height="90" width="150" x="1200" y="335" as="geometry" />
+          <mxGeometry height="90" width="150" x="1520" y="335" as="geometry" />
         </mxCell>
         <mxCell id="jaeger" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#C75100;fillColor=#FFF3E0;fontColor=#7A3E00;fontStyle=1;" value="Jaeger ECS Service&#xa;UI :16686&#xa;OTLP :4317" vertex="1">
           <mxGeometry height="85" width="190" x="1180" y="500" as="geometry" />
         </mxCell>
         <mxCell id="grafana" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#C75100;fillColor=#FFF3E0;fontColor=#7A3E00;fontStyle=1;" value="Grafana ECS Service&#xa;Dashboard 6 paneles&#xa;CloudWatch + Jaeger datasources" vertex="1">
-          <mxGeometry height="85" width="190" x="1180" y="610" as="geometry" />
+          <mxGeometry height="85" width="190" x="1180" y="600" as="geometry" />
         </mxCell>
         <mxCell id="cloudwatch" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#B71C1C;fillColor=#FFEBEE;fontColor=#7F0000;fontStyle=1;" value="CloudWatch Logs / Metrics&#xa;/otel-lab/service-a&#xa;/otel-lab/service-b&#xa;/otel-lab/collector" vertex="1">
           <mxGeometry height="100" width="250" x="950" y="790" as="geometry" />
@@ -83,27 +83,37 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e-ca-xray" edge="1" parent="1" source="collector-a" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" target="xray" value="awsxray exporter">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry x="-0.4" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="e-cb-xray" edge="1" parent="1" source="collector-b" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" target="xray" value="awsxray exporter">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry x="0.4" relative="1" as="geometry">
+            <mxPoint as="offset" y="20" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="e-ca-jaeger" edge="1" parent="1" source="collector-a" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;edgeStyle=orthogonalEdgeStyle;curved=1;" target="jaeger" value="OTLP gRPC exporter">
-          <mxGeometry relative="1" as="geometry">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="780.07" y="492.47" />
-              <mxPoint x="780.07" y="570.07" />
+              <mxPoint x="740" y="590" />
             </Array>
+            <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="e-cb-jaeger" edge="1" parent="1" source="collector-b" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" target="jaeger" value="OTLP gRPC exporter">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry x="0.3" relative="1" as="geometry">
+            <mxPoint as="offset" y="-20" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="e-ca-cw" edge="1" parent="1" source="collector-a" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" target="cloudwatch" value="awscloudwatchlogs exporter">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry x="-0.35" relative="1" as="geometry">
+            <mxPoint as="offset" y="-15" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="e-cb-cw" edge="1" parent="1" source="collector-b" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#B71C1C;fontColor=#7F0000;" target="cloudwatch" value="awscloudwatchlogs exporter">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry x="0.35" relative="1" as="geometry">
+            <mxPoint as="offset" y="15" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="e-grafana-cw" edge="1" parent="1" source="grafana" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#1565C0;fontColor=#0D47A1;" target="cloudwatch" value="CloudWatch datasource&#xa;logs + ECS metrics">
           <mxGeometry relative="1" as="geometry" />
@@ -128,62 +138,62 @@
         </mxCell>
 
         <mxCell id="aws-cloud-boundary" value="AWS Cloud - us-east-1" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#232F3E;fillColor=none;fontColor=#232F3E;fontStyle=1;startSize=34;container=1;collapsible=0;" vertex="1" parent="1">
-          <mxGeometry x="55" y="95" width="1485" height="875" as="geometry" />
+          <mxGeometry x="20" y="95" width="1550" height="850" as="geometry" />
         </mxCell>
         <mxCell id="aws-vpc-boundary" value="Amazon VPC - otel-lab" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#147EBA;fillColor=none;fontColor=#147EBA;fontStyle=1;startSize=34;container=1;collapsible=0;" vertex="1" parent="1">
-          <mxGeometry x="125" y="170" width="955" height="640" as="geometry" />
+          <mxGeometry x="75" y="130" width="1000" height="700" as="geometry" />
         </mxCell>
         <mxCell id="aws-subnet-boundary" value="Public Subnet" style="swimlane;html=1;rounded=0;whiteSpace=wrap;strokeColor=#1F77B4;fillColor=none;fontColor=#1F77B4;fontStyle=1;startSize=30;container=1;collapsible=0;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="250" y="235" width="755" height="500" as="geometry" />
+          <mxGeometry x="240" y="160" width="760" height="610" as="geometry" />
         </mxCell>
 
         <mxCell id="aws-user" value="User / k6" style="shape=mxgraph.aws4.user;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="90" y="405" width="75" height="75" as="geometry" />
+          <mxGeometry x="-60" y="430" width="75" height="75" as="geometry" />
         </mxCell>
         <mxCell id="aws-igw" value="Internet&#xa;Gateway" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.internet_gateway;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="185" y="405" width="70" height="70" as="geometry" />
+          <mxGeometry x="90" y="430" width="70" height="70" as="geometry" />
         </mxCell>
         <mxCell id="aws-ecs" value="Amazon ECS&#xa;otel-lab-cluster" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecs;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="555" y="265" width="80" height="80" as="geometry" />
+          <mxGeometry x="580" y="200" width="80" height="80" as="geometry" />
         </mxCell>
 
         <mxCell id="aws-service-a" value="ECS Service&#xa;service-a&#xa;Fargate task&#xa;app + OTel sidecar" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="345" y="400" width="80" height="80" as="geometry" />
+          <mxGeometry x="280" y="430" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-service-b" value="ECS Service&#xa;service-b&#xa;Fargate task&#xa;app + OTel sidecar" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="555" y="400" width="80" height="80" as="geometry" />
+          <mxGeometry x="580" y="430" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-jaeger" value="ECS Service&#xa;Jaeger&#xa;UI :16686&#xa;OTLP :4317" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="755" y="400" width="80" height="80" as="geometry" />
+          <mxGeometry x="880" y="430" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-grafana" value="ECS Service&#xa;Grafana&#xa;UI :3000" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.fargate;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="855" y="575" width="80" height="80" as="geometry" />
+          <mxGeometry x="880" y="650" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-cloudmap" value="AWS Cloud Map&#xa;otel-lab.local" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloud_map;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="555" y="615" width="80" height="80" as="geometry" />
+          <mxGeometry x="280" y="650" width="80" height="80" as="geometry" />
         </mxCell>
 
         <mxCell id="aws-ecr" value="Amazon ECR&#xa;container images" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.ecr;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="175" width="80" height="80" as="geometry" />
+          <mxGeometry x="1260" y="100" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-dynamodb" value="Amazon DynamoDB&#xa;otel-lab-products" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.dynamodb;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="330" width="80" height="80" as="geometry" />
+          <mxGeometry x="1260" y="255" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-cloudwatch" value="Amazon CloudWatch&#xa;Logs + ECS metrics" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.cloudwatch;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="485" width="80" height="80" as="geometry" />
+          <mxGeometry x="1260" y="485" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-xray" value="AWS X-Ray&#xa;service graph" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.x_ray;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="640" width="80" height="80" as="geometry" />
+          <mxGeometry x="1260" y="640" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-iam" value="AWS IAM&#xa;task roles + policies" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.iam;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="795" width="80" height="80" as="geometry" />
+          <mxGeometry x="1260" y="795" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="aws-budget" value="AWS Budgets&#xa;otel-lab-budget" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.budgets;html=1;whiteSpace=wrap;fontStyle=1;align=center;verticalLabelPosition=bottom;verticalAlign=top;" vertex="1" parent="1">
-          <mxGeometry x="1365" y="795" width="80" height="80" as="geometry" />
+          <mxGeometry x="1435" y="795" width="80" height="80" as="geometry" />
         </mxCell>
 
         <mxCell id="aws-note" value="Sin ALB/NAT/RDS/EKS/Managed Grafana/Managed Prometheus para reducir costo. service-a, Jaeger y Grafana expuestos con IP publica efimera de Fargate. service-b y Jaeger resueltos internamente por Cloud Map." style="text;html=1;strokeColor=none;fillColor=none;fontSize=13;align=left;verticalAlign=top;whiteSpace=wrap;" vertex="1" parent="1">
-          <mxGeometry x="250" y="870" width="760" height="65" as="geometry" />
+          <mxGeometry x="240" y="850" width="760" height="65" as="geometry" />
         </mxCell>
 
         <mxCell id="aws-e-user-igw" value="HTTP public" style="endArrow=block;html=1;rounded=0;strokeWidth=2;strokeColor=#232F3E;fontColor=#232F3E;" edge="1" parent="1" source="aws-user" target="aws-igw">
