@@ -94,5 +94,6 @@ locals {
     collector_a             = "/otel-lab/collector-a"
     collector_b             = "/otel-lab/collector-b"
     collector_exported_logs = "/otel-lab/otel-collector-exported"
+    collector_metrics       = "/otel-lab/otel-collector-metrics"
   }
 }

@@ -66,7 +66,10 @@ data "aws_iam_policy_document" "collector_logs_write" {
       "logs:DescribeLogStreams",
       "logs:PutLogEvents"
     ]
-    resources = ["${aws_cloudwatch_log_group.app["collector_exported_logs"].arn}:*"]
+    resources = [
+      "${aws_cloudwatch_log_group.app["collector_exported_logs"].arn}:*",
+      "${aws_cloudwatch_log_group.app["collector_metrics"].arn}:*"
+    ]
   }
 }
 
