@@ -16,3 +16,7 @@ logs/
 .env
 .env.*
 aws-credentials*
+
+# Local-only document drafts (kept out of the repo on purpose)
+docs/REPORT.docx
+~$*
