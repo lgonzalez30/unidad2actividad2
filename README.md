@@ -189,6 +189,6 @@ Entregables principales:
 - Infraestructura Terraform: [infra](infra)
 - Dashboard Grafana AWS: [grafana-aws/dashboards/otel-aws-lab.json](grafana-aws/dashboards/otel-aws-lab.json)
 - Diagrama Draw.io: [docs/architecture.drawio](docs/architecture.drawio)
-- Reporte tecnico Markdown: [docs/REPORT.md](docs/REPORT.md)
-- Reporte tecnico PDF: [docs/REPORT.pdf](docs/REPORT.pdf)
+- Reporte tecnico Markdown, recomendado para ver en GitHub: [docs/REPORT.md](docs/REPORT.md)
+- Reporte tecnico PDF, descarga directa si el visor de GitHub no carga: [docs/REPORT.pdf](docs/REPORT.pdf?raw=1)
 - Evidencias: [docs/EVIDENCE.md](docs/EVIDENCE.md), [docs/evidence](docs/evidence), [docs/screenshots](docs/screenshots)
