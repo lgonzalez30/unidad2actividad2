@@ -2,7 +2,7 @@ AWS_REGION ?= us-east-1
 AWS_PROFILE ?= otel-lab
 AWS_ROLE_ARN ?= arn:aws:iam::026338613200:role/otel-lab-terraform-role
 IMAGE_TAG ?= latest
-VUS ?= 10
+VUS ?= 75
 WARMUP ?= 30s
 DURATION ?= 5m
 TF_DIR := infra
@@ -52,11 +52,11 @@ deploy:
 
 benchmark-baseline:
 	OTEL_ENABLED=false docker compose up --build -d
-	docker compose --profile benchmark run --rm -e VUS=$(VUS) -e WARMUP=$(WARMUP) -e DURATION=$(DURATION) k6 run --summary-trend-stats "avg,min,med,p(90),p(95),p(99),max" /scripts/load-test.js
+	MSYS_NO_PATHCONV=1 docker compose --profile benchmark run --rm -e VUS=$(VUS) -e WARMUP=$(WARMUP) -e DURATION=$(DURATION) k6 run --summary-trend-stats "avg,min,med,p(90),p(95),p(99),max" /scripts/load-test.js
 
 benchmark-otel:
 	OTEL_ENABLED=true docker compose up --build -d
-	docker compose --profile benchmark run --rm -e VUS=$(VUS) -e WARMUP=$(WARMUP) -e DURATION=$(DURATION) k6 run --summary-trend-stats "avg,min,med,p(90),p(95),p(99),max" /scripts/load-test.js
+	MSYS_NO_PATHCONV=1 docker compose --profile benchmark run --rm -e VUS=$(VUS) -e WARMUP=$(WARMUP) -e DURATION=$(DURATION) k6 run --summary-trend-stats "avg,min,med,p(90),p(95),p(99),max" /scripts/load-test.js
 
 benchmark-overhead:
 	VUS=$(VUS) WARMUP=$(WARMUP) DURATION=$(DURATION) bash benchmark/run-overhead.sh
@@ -101,5 +101,5 @@ verify-cleanup:
 	aws ecs list-services --profile $(AWS_PROFILE) --cluster otel-lab-cluster --region $(AWS_REGION) || true
 	aws ecs list-tasks --profile $(AWS_PROFILE) --cluster otel-lab-cluster --region $(AWS_REGION) || true
 	aws dynamodb describe-table --profile $(AWS_PROFILE) --table-name otel-lab-products --region $(AWS_REGION) || true
-	aws logs describe-log-groups --profile $(AWS_PROFILE) --log-group-name-prefix /otel-lab --region $(AWS_REGION) || true
+	MSYS_NO_PATHCONV=1 aws logs describe-log-groups --profile $(AWS_PROFILE) --log-group-name-prefix /otel-lab --region $(AWS_REGION) || true
 	aws ecr describe-repositories --profile $(AWS_PROFILE) --repository-names otel-lab-service-a otel-lab-service-b otel-lab-grafana --region $(AWS_REGION) || true
