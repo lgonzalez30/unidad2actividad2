@@ -1,6 +1,18 @@
 # Evidencias
 
-Guardar capturas en `docs/screenshots/`.
+Capturas organizadas por fecha de despliegue en `docs/screenshots/<YYYY-MM-DD>/`:
+
+- `docs/screenshots/2026-08-15/` — despliegue original. Historico: corresponde a una revision de codigo anterior a los fixes de logs OTLP y metricas AWS (ver `docs/BENCHMARK.md`), no se renombraron individualmente.
+- `docs/screenshots/2026-08-16/` — despliegue actual, post-fix de logs/metricas y benchmark a 75 VUs/5min. Numeradas en el orden en que se tomaron. Ver tabla de mapeo abajo.
+
+## Mapeo de capturas — 2026-08-16
+
+| # | Archivo | Que muestra |
+| --- | --- | --- |
+| 1 | `01-jaeger-trace-list.png` | Jaeger UI, busqueda por `service-a`, lista de trazas recientes (6 spans cada una) |
+| 2 | `02-jaeger-waterfall-full-trace.png` | Traza completa expandida: `service-a` -> `process-order` -> `service-b` -> `lookup-product` -> `DynamoDb.GetItem` |
+| 3 | `03-jaeger-process-order-attributes.png` | Span `process-order` expandido con atributos custom (`order.id`, `product.id`, `business.operation`) |
+| 4 | `04-grafana-aws-dashboard.png` | Dashboard Grafana AWS, 6 paneles (2 paneles de CPU/Memoria siguen siendo texto estatico, pendiente) |
 
 Checklist:
 
