@@ -15,6 +15,7 @@ El objetivo adicional es que el enfoque pueda reutilizarse en otros servicios Ja
 Se implemento una libreria con dos capas:
 
 - `company-otel-core`: contiene `@OtelCompanyTrace`, configuracion, resolucion de atributos y ejecucion del span usando solo `opentelemetry-api`.
+- `company-otel-jboss-mdc`: adaptador opcional para publicar `trace_id` y `span_id` en JBoss MDC sin repetir codigo en cada servicio.
 - `company-otel-aspectj`: contiene un adapter AOP con AspectJ para interceptar metodos anotados.
 
 La configuracion de atributos vive en `company-otel.properties` dentro de cada servicio. La aplicacion host sigue siendo responsable de configurar SDK/exporters mediante Quarkus OpenTelemetry, Java agent u otro runtime.
@@ -32,6 +33,7 @@ La configuracion de atributos vive en `company-otel.properties` dentro de cada s
 Positivas:
 
 - Los spans custom quedan estandarizados.
+- La correlacion de logs tambien queda estandarizada para runtimes basados en JBoss Logging.
 - Se puede desactivar o cambiar atributos sin tocar codigo Java.
 - La libreria es portable a otros frameworks Java.
 
@@ -56,4 +58,3 @@ Costos:
 ```
 
 Los spans generados aparecen dentro de la misma traza distribuida que los spans HTTP y DynamoDB, permitiendo ver el flujo `service-a -> service-b -> DynamoDB` con contexto de negocio.
-

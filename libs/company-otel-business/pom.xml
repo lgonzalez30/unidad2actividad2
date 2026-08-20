@@ -11,6 +11,7 @@
 
   <modules>
     <module>company-otel-core</module>
+    <module>company-otel-jboss-mdc</module>
     <module>company-otel-aspectj</module>
   </modules>
 

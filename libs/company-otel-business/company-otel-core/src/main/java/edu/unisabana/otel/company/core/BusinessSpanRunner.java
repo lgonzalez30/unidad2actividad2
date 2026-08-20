@@ -22,12 +22,19 @@ public final class BusinessSpanRunner {
     private final Tracer tracer;
     private final CompanyOtelConfig config;
     private final AttributeResolver attributeResolver;
+    private final CurrentSpanContextBinder contextBinder;
     private final AtomicLong nextWarningNanos = new AtomicLong();
 
     public BusinessSpanRunner(Tracer tracer, CompanyOtelConfig config, AttributeResolver attributeResolver) {
+        this(tracer, config, attributeResolver, CurrentSpanContextBinder.NOOP);
+    }
+
+    public BusinessSpanRunner(Tracer tracer, CompanyOtelConfig config, AttributeResolver attributeResolver,
+            CurrentSpanContextBinder contextBinder) {
         this.tracer = tracer;
         this.config = config;
         this.attributeResolver = attributeResolver;
+        this.contextBinder = contextBinder;
     }
 
     public static BusinessSpanRunner createDefault() {
@@ -50,7 +57,8 @@ public final class BusinessSpanRunner {
         span.setAttribute("company.operation", operation.operation());
 
         InvocationContext baseContext = new InvocationContext(method, arguments, argumentNames, null, null);
-        try (Scope ignored = span.makeCurrent()) {
+        try (Scope ignored = span.makeCurrent();
+                CurrentSpanContextBinder.BoundContext ignoredContext = contextBinder.bind(span)) {
             Object result = callable.call();
             InvocationContext resultContext = baseContext.withResult(result);
             if (annotation.recordResult() && operation.captureResult()) {

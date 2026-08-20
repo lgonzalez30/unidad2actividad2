@@ -21,7 +21,6 @@ public class OrderService {
 
     @OtelCompanyTrace(operation = "otel.company.order.process")
     public OrderResponse processOrder(String orderId) {
-        TraceMdc.putCurrentSpan();
         Timer.Sample sample = Timer.start(meterRegistry);
         String productId = productIdFor(orderId);
         try {

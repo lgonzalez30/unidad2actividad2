@@ -75,7 +75,7 @@ En la versión original del repositorio, `quarkus.otel.logs.enabled` estaba en `
 
 ## 5. Logs estructurados y correlación
 
-Los servicios emiten logs JSON hacia stdout con MDC de trazas (`TraceMdc.java`). En AWS, esos logs llegan a CloudWatch Logs por dos vías independientes:
+Los servicios emiten logs JSON hacia stdout con MDC de trazas. La correlación `trace_id`/`span_id` se centralizó en la librería reutilizable mediante el módulo `company-otel-jboss-mdc`, evitando clases locales tipo `TraceMdc.java` en cada microservicio. En AWS, esos logs llegan a CloudWatch Logs por dos vías independientes:
 
 - Driver de contenedor (`awslogs`): captura stdout directo a `/otel-lab/service-a` y `/otel-lab/service-b`.
 - Pipeline OTLP del Collector: la aplicación emite logs OTLP al Collector, que los exporta a `/otel-lab/otel-collector-exported` mediante `awscloudwatchlogs`.

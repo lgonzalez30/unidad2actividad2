@@ -11,6 +11,7 @@ Centralizar la instrumentacion custom que normalmente se repite en servicios: cr
 | Modulo | Responsabilidad |
 | --- | --- |
 | `company-otel-core` | Anotacion, configuracion, resolucion de atributos y ejecucion de spans usando solo OpenTelemetry API. |
+| `company-otel-jboss-mdc` | Adaptador opcional para publicar `trace_id` y `span_id` en JBoss MDC durante requests y spans de negocio. |
 | `company-otel-aspectj` | Adaptador AOP con AspectJ para interceptar metodos anotados sin depender de Quarkus, Spring o Jakarta CDI. |
 
 ## Diseno
@@ -100,6 +101,12 @@ Esta libreria no reemplaza la auto-instrumentacion HTTP/DB. La complementa:
 - Esta libreria crea spans de negocio como `process order` y `lookup product`.
 - Todos comparten el mismo contexto de traza porque usan `GlobalOpenTelemetry`.
 
+## Correlacion De Logs
+
+El modulo `company-otel-jboss-mdc` mueve la responsabilidad de `trace_id` y `span_id` fuera de los microservicios. El aspect usa `OtelJbossMdc.BINDER` para poblar el MDC mientras se ejecuta un span de negocio, y tambien envuelve metodos JAX-RS (`@GET`, `@POST`, etc.) para cubrir logs del borde HTTP sin crear spans adicionales.
+
+Con esto, los servicios no necesitan clases locales tipo `TraceMdc` ni llamadas manuales a `MDC.put(...)`.
+
 ## Limitaciones
 
 - Requiere weaving AspectJ en build time si se usa el adaptador `company-otel-aspectj`.
@@ -130,4 +137,3 @@ mvn -f libs/company-otel-business/pom.xml -B -Dmaven.repo.local=.m2/repository i
 mvn -f service-a/pom.xml -B -Dmaven.repo.local=.m2/repository -DskipTests package
 mvn -f service-b/pom.xml -B -Dmaven.repo.local=.m2/repository -DskipTests package
 ```
-

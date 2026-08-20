@@ -19,6 +19,17 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>edu.unisabana.otel</groupId>
+      <artifactId>company-otel-jboss-mdc</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.ws.rs</groupId>
+      <artifactId>jakarta.ws.rs-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjrt</artifactId>
       <version>${aspectj.version}</version>

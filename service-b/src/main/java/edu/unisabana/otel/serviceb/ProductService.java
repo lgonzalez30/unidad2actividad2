@@ -29,7 +29,6 @@ public class ProductService {
 
     @OtelCompanyTrace(operation = "otel.company.product.lookup")
     public Optional<ProductResponse> lookupProduct(String productId) {
-        TraceMdc.putCurrentSpan();
         Timer.Sample sample = Timer.start(meterRegistry);
         try {
             Map<String, AttributeValue> item = dynamoDbClient.getItem(GetItemRequest.builder()
